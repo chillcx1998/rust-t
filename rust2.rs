@@ -104,213 +104,283 @@
 // }
 //2026-1-13日
 //1. 结构体进阶：嵌套结构体 + 方法扩展
-#[derive(Debug)]
-// 坐标点（基础结构体）
-struct Point {
-    x: i32,
-    y: i32,
-}
+// #[derive(Debug)]
+// // 坐标点（基础结构体）
+// struct Point {
+//     x: i32,
+//     y: i32,
+// }
 
-#[derive(Debug)]
-// 矩形
-struct Rectangle {
-    top_left: Point,
-    bottom_right: Point,
-}
+// #[derive(Debug)]
+// // 矩形
+// struct Rectangle {
+//     top_left: Point,
+//     bottom_right: Point,
+// }
 
-impl Point {
-// 创建原点
-    fn origin() -> Self {
-        Point { x: 0, y: 0 }
-    }
+// impl Point {
+// // 创建原点
+//     fn origin() -> Self {
+//         Point { x: 0, y: 0 }
+//     }
 
-// 创建自定义点
-    fn new(x: i32, y: i32) -> Self {
-        Point { x, y }
-    }
+// // 创建自定义点
+//     fn new(x: i32, y: i32) -> Self {
+//         Point { x, y }
+//     }
 
-// 移动坐标
-    fn move_by(&mut self, dx: i32, dy: i32) {
-        self.x += dx;
-        self.y += dy;
-    }
+// // 移动坐标
+//     fn move_by(&mut self, dx: i32, dy: i32) {
+//         self.x += dx;
+//         self.y += dy;
+//     }
 
-// 实例方法：计算到另一个点的距离平方
-    fn distance_sq(&self, other: &Point) -> i32 {
-        let dx = self.x - other.x;
-        let dy = self.y - other.y;
-        dx * dx + dy * dy
-    }
-}
+// // 实例方法：计算到另一个点的距离平方
+//     fn distance_sq(&self, other: &Point) -> i32 {
+//         let dx = self.x - other.x;
+//         let dy = self.y - other.y;
+//         dx * dx + dy * dy
+//     }
+// }
 
-impl Rectangle {
-// 实例方法：计算矩形面积
-    fn area(&self) -> u32 {
-        let width = (self.bottom_right.x - self.top_left.x).abs() as u32;
-        let height = (self.bottom_right.y - self.top_left.y).abs() as u32;
-        width * height
-    }
+// impl Rectangle {
+// // 实例方法：计算矩形面积
+//     fn area(&self) -> u32 {
+//         let width = (self.bottom_right.x - self.top_left.x).abs() as u32;
+//         let height = (self.bottom_right.y - self.top_left.y).abs() as u32;
+//         width * height
+//     }
 
-// 实例方法：判断点是否在矩形内
-    fn contains(&self, p: &Point) -> bool {
-        p.x >= self.top_left.x && p.x <= self.bottom_right.x
-        && p.y >= self.top_left.y && p.y <= self.bottom_right.y
-    }
-}
+// // 实例方法：判断点是否在矩形内
+//     fn contains(&self, p: &Point) -> bool {
+//         p.x >= self.top_left.x && p.x <= self.bottom_right.x
+//         && p.y >= self.top_left.y && p.y <= self.bottom_right.y
+//     }
+// }
 
-//2. Result错误处理 + 枚举方法
-#[derive(Debug)]
-// 自定义错误类型
-enum CalculationError {
-    DivisionByZero,
-    NegativeSquareRoot(i32),
-    InvalidInput(&'static str),
-}
+// //2. Result错误处理 + 枚举方法
+// #[derive(Debug)]
+// // 自定义错误类型
+// enum CalculationError {
+//     DivisionByZero,
+//     NegativeSquareRoot(i32),
+//     InvalidInput(&'static str),
+// }
 
-#[derive(Debug)]
-// 操作类型枚举
-enum MathOperation {
-    Add(i32, i32),
-    Subtract(i32, i32),
-    Multiply(i32, i32),
-    Divide(i32, i32),
-    SquareRoot(i32),
-    Invalid(&'static str),
-}
+// #[derive(Debug)]
+// // 操作类型枚举
+// enum MathOperation {
+//     Add(i32, i32),
+//     Subtract(i32, i32),
+//     Multiply(i32, i32),
+//     Divide(i32, i32),
+//     SquareRoot(i32),
+//     Invalid(&'static str),
+// }
 
-impl MathOperation {
-// 枚举方法：执行并返回Result
-    fn execute(&self) -> Result<i32, CalculationError> {
-        match self {
-            MathOperation::Add(a, b) => Ok(a + b),
-            MathOperation::Subtract(a, b) => Ok(a - b), 
-            MathOperation::Multiply(a, b) => Ok(a * b),
-            MathOperation::Divide(a, b) => {
-                if *b == 0 {
-                    Err(CalculationError::DivisionByZero)
-                } else {
-                    Ok(a / b)
-                }
-            }
-            MathOperation::SquareRoot(n) => {
-                if *n < 0 {
-                    Err(CalculationError::NegativeSquareRoot(*n))
-                } else {
-                    Ok((*n as f64).sqrt() as i32)
-                }
-            }
-            MathOperation::Invalid(msg) => {
-                Err(CalculationError::InvalidInput(msg))
-            }
+// impl MathOperation {
+// // 枚举方法：执行并返回Result
+//     fn execute(&self) -> Result<i32, CalculationError> {
+//         match self {
+//             MathOperation::Add(a, b) => Ok(a + b),
+//             MathOperation::Subtract(a, b) => Ok(a - b), 
+//             MathOperation::Multiply(a, b) => Ok(a * b),
+//             MathOperation::Divide(a, b) => {
+//                 if *b == 0 {
+//                     Err(CalculationError::DivisionByZero)
+//                 } else {
+//                     Ok(a / b)
+//                 }
+//             }
+//             MathOperation::SquareRoot(n) => {
+//                 if *n < 0 {
+//                     Err(CalculationError::NegativeSquareRoot(*n))
+//                 } else {
+//                     Ok((*n as f64).sqrt() as i32)
+//                 }
+//             }
+//             MathOperation::Invalid(msg) => {
+//                 Err(CalculationError::InvalidInput(msg))
+//             }
+//         }
+//     }
+
+// // 打印错误详情
+//     fn print_error_detail(err: &CalculationError) {
+//         match err {
+//             CalculationError::DivisionByZero => println!("错误：除数不能为0"),
+//             CalculationError::NegativeSquareRoot(n) => println!("错误：无法计算{}的平方根（负数）", n), // 读取字段
+//             CalculationError::InvalidInput(msg) => println!("错误：输入无效 - {}", msg),
+//         }
+//     }
+// }
+
+// //3. Trait基础：定义/实现特质
+// // 定义特质
+// trait Describable {
+//     fn describe(&self) -> String;
+
+// // 默认方法
+//     fn print_description(&self) {
+//         println!("描述：{}", self.describe());
+//     }
+// }
+// impl Describable for Point {
+//     fn describe(&self) -> String {
+//         format!("坐标点({},{})", self.x, self.y)
+//     }
+// }
+// impl Describable for MathOperation {
+//     fn describe(&self) -> String {
+//         match self {
+//             MathOperation::Add(a, b) => format!("{} + {}", a, b),
+//             MathOperation::Subtract(a, b) => format!("{} - {}", a, b),
+//             MathOperation::Multiply(a, b) => format!("{} × {}", a, b),
+//             MathOperation::Divide(a, b) => format!("{} ÷ {}", a, b),
+//             MathOperation::SquareRoot(n) => format!("√{}", n),
+//             MathOperation::Invalid(msg) => format!("无效操作：{}", msg),
+//         }
+//     }
+// }
+// // 4. 模式匹配进阶：if let/while let
+// // 简化Option匹配
+// fn print_option(opt: Option<i32>) {
+// // 替代match opt
+//     if let Some(value) = opt {
+//         println!("Option有值：{}", value);
+//     } else {
+//         println!("Option无值（None）");
+//     }
+// }
+
+// // 简化循环匹配
+// fn count_down() {
+//     let mut count = 5;
+//     while let Some(n) = if count >= 0 { Some(count) } else { None } {
+//         println!("倒计时：{}", n);
+//         count -= 1;
+//     }
+//     println!("倒计时结束！");
+// }
+
+
+// fn main() {
+// // 1. 嵌套结构体
+//     println!(" 嵌套结构体演示 ");
+//     let mut p1 = Point::new(1, 2);
+//     let p2 = Point::origin();
+//     let rect = Rectangle {
+//         top_left: Point::new(0, 5),
+//         bottom_right: Point::new(10, 0),
+//     };
+
+//     p1.move_by(3, 4); 
+//     println!("移动后的p1：{:?}", p1);
+//     println!("p1到p2的距离平方：{}", p1.distance_sq(&p2));
+//     println!("矩形面积：{}", rect.area());
+//     println!("p2是否在矩形内：{}", rect.contains(&p2));
+//     println!("p1是否在矩形内：{}", rect.contains(&p1));
+
+// //2. Trait特质
+//     println!("\n Trait特质演示 ");
+//     p1.print_description();
+//     let op_sub = MathOperation::Subtract(20, 8);
+//     op_sub.print_description();
+
+// //3. 枚举+Result错误处理
+//     println!("\n 枚举+错误处理演示 ");
+//     let operations = [
+//         MathOperation::Add(5, 3),
+//         MathOperation::Subtract(20, 8), 
+//         MathOperation::Divide(10, 0),   
+//         MathOperation::SquareRoot(-9), 
+//         MathOperation::Multiply(4, 5),
+//         MathOperation::SquareRoot(16),
+//         MathOperation::Invalid("非数字输入"), 
+//     ];
+//     for op in operations {
+//         op.print_description();
+//         match op.execute() {
+//             Ok(result) => println!("运算结果：{}", result),
+//             Err(e) => {
+//                 MathOperation::print_error_detail(&e); 
+//             }
+//         }
+//     }
+
+// //4. 模式匹配进阶（if let/while let）
+//     println!("\n 模式匹配进阶演示 ");
+//     print_option(Some(99));
+//     print_option(None);
+//     count_down();
+// }
+
+//2026-1-14日
+//1.泛型
+ // (1) 泛型函数
+
+fn find_largest<T: PartialOrd>(list: &[T]) -> &T {
+    let mut largest = &list[0];
+    for item in list {
+        if item > largest {
+            largest = item;
         }
     }
-
-// 打印错误详情
-    fn print_error_detail(err: &CalculationError) {
-        match err {
-            CalculationError::DivisionByZero => println!("错误：除数不能为0"),
-            CalculationError::NegativeSquareRoot(n) => println!("错误：无法计算{}的平方根（负数）", n), // 读取字段
-            CalculationError::InvalidInput(msg) => println!("错误：输入无效 - {}", msg),
-        }
-    }
+    largest
 }
 
-//3. Trait基础：定义/实现特质
-// 定义特质
-trait Describable {
-    fn describe(&self) -> String;
+ // (2) 泛型结构体
+#[derive(Debug)]
+struct Container<T, U> { 
+    value: T,
+    desc: U,
+}
 
-// 默认方法
-    fn print_description(&self) {
-        println!("描述：{}", self.describe());
+ // (3) 泛型Trait
+trait PrintInfo {
+    fn print(&self);
+}
+
+// 为泛型结构体实现Trait
+impl<T: std::fmt::Display, U: std::fmt::Display> PrintInfo for Container<T, U> {
+    fn print(&self) {
+        println!("内容：{}，描述：{}", self.value, self.desc);
     }
 }
-impl Describable for Point {
-    fn describe(&self) -> String {
-        format!("坐标点({},{})", self.x, self.y)
-    }
+
+//2：生命周期（Lifetimes）：告诉编译器引用的存活时间，解决悬垂引用问题
+#[derive(Debug)]
+struct BorrowedData<'a> {
+    data: &'a str, 
 }
-impl Describable for MathOperation {
-    fn describe(&self) -> String {
-        match self {
-            MathOperation::Add(a, b) => format!("{} + {}", a, b),
-            MathOperation::Subtract(a, b) => format!("{} - {}", a, b),
-            MathOperation::Multiply(a, b) => format!("{} × {}", a, b),
-            MathOperation::Divide(a, b) => format!("{} ÷ {}", a, b),
-            MathOperation::SquareRoot(n) => format!("√{}", n),
-            MathOperation::Invalid(msg) => format!("无效操作：{}", msg),
-        }
-    }
-}
-// 4. 模式匹配进阶：if let/while let
-// 简化Option匹配
-fn print_option(opt: Option<i32>) {
-// 替代match opt
-    if let Some(value) = opt {
-        println!("Option有值：{}", value);
+
+fn get_longer_str<'a>(s1: &'a str, s2: &'a str) -> &'a str {
+    if s1.len() > s2.len() {
+        s1
     } else {
-        println!("Option无值（None）");
+        s2
     }
 }
-
-// 简化循环匹配
-fn count_down() {
-    let mut count = 5;
-    while let Some(n) = if count >= 0 { Some(count) } else { None } {
-        println!("倒计时：{}", n);
-        count -= 1;
-    }
-    println!("倒计时结束！");
-}
-
 
 fn main() {
-// 1. 嵌套结构体
-    println!(" 嵌套结构体演示 ");
-    let mut p1 = Point::new(1, 2);
-    let p2 = Point::origin();
-    let rect = Rectangle {
-        top_left: Point::new(0, 5),
-        bottom_right: Point::new(10, 0),
-    };
+    // 1. 泛型演示
+    let nums = [10, 5, 88, 23];
+    let chars = ['a', 'z', 'm'];
+    println!("数字数组最大值：{}", find_largest(&nums));
+    println!("字符数组最大值：{}", find_largest(&chars));
 
-    p1.move_by(3, 4); 
-    println!("移动后的p1：{:?}", p1);
-    println!("p1到p2的距离平方：{}", p1.distance_sq(&p2));
-    println!("矩形面积：{}", rect.area());
-    println!("p2是否在矩形内：{}", rect.contains(&p2));
-    println!("p1是否在矩形内：{}", rect.contains(&p1));
+    let cont1 = Container { value: 99, desc: "整数" };
+    let cont2 = Container { value: 3.14, desc: "浮点数" };
+    cont1.print();
+    cont2.print();
 
-//2. Trait特质
-    println!("\n Trait特质演示 ");
-    p1.print_description();
-    let op_sub = MathOperation::Subtract(20, 8);
-    op_sub.print_description();
+    // 2. 生命周期演示
+    let s1 = String::from("hello");
+    let s2 = "rust";
+    let longer = get_longer_str(&s1, s2);
+    println!("\n更长的字符串：{}", longer);
 
-//3. 枚举+Result错误处理
-    println!("\n 枚举+错误处理演示 ");
-    let operations = [
-        MathOperation::Add(5, 3),
-        MathOperation::Subtract(20, 8), 
-        MathOperation::Divide(10, 0),   
-        MathOperation::SquareRoot(-9), 
-        MathOperation::Multiply(4, 5),
-        MathOperation::SquareRoot(16),
-        MathOperation::Invalid("非数字输入"), 
-    ];
-    for op in operations {
-        op.print_description();
-        match op.execute() {
-            Ok(result) => println!("运算结果：{}", result),
-            Err(e) => {
-                MathOperation::print_error_detail(&e); 
-            }
-        }
-    }
-
-//4. 模式匹配进阶（if let/while let）
-    println!("\n 模式匹配进阶演示 ");
-    print_option(Some(99));
-    print_option(None);
-    count_down();
+    let borrowed = BorrowedData { data: &s1 };
+    println!("借用的数据：{:?}", borrowed);
+    println!("显式读取data字段：{}", borrowed.data);
 }
